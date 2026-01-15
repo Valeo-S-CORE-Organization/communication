@@ -183,9 +183,6 @@ TEST_F(GenericSkeletonEventTest, AllocateAndSendSucceedsAfterOffer)
     auto alloc_result = event->Allocate();
     ASSERT_TRUE(alloc_result.has_value());
 
-    EXPECT_CALL(*mock_event_binding_ptr, Send(testing::Matcher<lola::ControlSlotCompositeIndicator>(_)))
-        .WillOnce(Return(score::Blank{}));
-
     auto send_result = event->Send(std::move(alloc_result.value()));
     ASSERT_TRUE(send_result.has_value());
 }

@@ -23,7 +23,6 @@ namespace score::mw::com::impl::mock_binding
 class GenericSkeletonEvent : public GenericSkeletonEventBinding
 {
   public:
-    MOCK_METHOD(Result<score::Blank>, Send, (const void*), (noexcept, override));
     MOCK_METHOD(Result<score::Blank>, Send, (lola::ControlSlotCompositeIndicator), (noexcept, override));
     MOCK_METHOD(Result<lola::SampleAllocateePtr<void>>, Allocate, (), (noexcept, override));
     MOCK_METHOD((std::pair<size_t, size_t>), GetSizeInfo, (), (const, noexcept, override));
