@@ -13,10 +13,14 @@
 #ifndef SCORE_MW_COM_IMPL_PLUMBING_GENERIC_SKELETON_EVENT_BINDING_FACTORY_H
 #define SCORE_MW_COM_IMPL_PLUMBING_GENERIC_SKELETON_EVENT_BINDING_FACTORY_H
 
+// 1. Include the Interface (so we can use IGenericSkeletonEventBindingFactory)
+#include "score/mw/com/impl/i_generic_skeleton_event_binding_factory.h"
+
+// 2. Include Headers for Real Implementation
 #include "score/mw/com/impl/generic_skeleton_event_binding.h"
 #include "score/mw/com/impl/skeleton_base.h"
 #include "score/mw/com/impl/size_info.h"
-#include "score/mw/com/impl/service_element_type.h" // Added for ServiceElementType
+#include "score/mw/com/impl/service_element_type.h"
 #include "score/mw/com/impl/plumbing/skeleton_service_element_binding_factory_impl.h"
 
 #include "score/result/result.h"
@@ -30,10 +34,24 @@ namespace score::mw::com::impl
 class GenericSkeletonEventBindingFactory
 {
   public:
-    static Result<std::unique_ptr<GenericSkeletonEventBinding>> Create(SkeletonBase& skeleton_base,
-                                                                       std::string_view event_name,
-                                                                       const SizeInfo& size_info) noexcept
+    // C++17 inline static allows defining this variable directly in the header.
+    // This serves as the "hook" for your unit tests.
+    inline static IGenericSkeletonEventBindingFactory* mock_ = nullptr;
+
+    // This static method allows your Source Code (generic_skeleton.cpp) 
+    // to call GenericSkeletonEventBindingFactory::Create(...) directly.
+    static Result<std::unique_ptr<GenericSkeletonEventBinding>> Create(
+        SkeletonBase& skeleton_base,
+        std::string_view event_name,
+        const SizeInfo& size_info) noexcept
     {
+        // A. If a Mock is registered (during Unit Tests), use it.
+        if (mock_ != nullptr)
+        {
+            return mock_->Create(skeleton_base, event_name, size_info);
+        }
+
+        // B. Otherwise (in Production), use the Real Implementation.
         const auto& instance_identifier = SkeletonBaseView{skeleton_base}.GetAssociatedInstanceIdentifier();
         return CreateSkeletonServiceElement<GenericSkeletonEventBinding, lola::GenericSkeletonEvent, ServiceElementType::EVENT>(
             instance_identifier,

@@ -60,6 +60,11 @@ Result<GenericSkeletonEvent*> GenericSkeleton::AddEvent(std::string_view name, c
         return MakeUnexpected(ComErrc::kServiceInstanceAlreadyOffered);
     }
 
+    if (owned_events_.count(name) > 0)
+    {
+        return MakeUnexpected(ComErrc::kServiceElementAlreadyExists);
+    }
+
     auto event_binding_result = GenericSkeletonEventBindingFactory::Create(*this, name, size_info);
     if (!event_binding_result.has_value())
     {
@@ -68,12 +73,7 @@ Result<GenericSkeletonEvent*> GenericSkeleton::AddEvent(std::string_view name, c
 
     auto emplace_result = owned_events_.emplace(
         name, std::make_unique<GenericSkeletonEvent>(*this, name, std::move(event_binding_result).value()));
-    if (!emplace_result.second)
-    {
-        // An event with this name has already been added.
-        return MakeUnexpected(ComErrc::kServiceElementAlreadyExists);
-    }
-
+    
     return emplace_result.first->second.get();
 }
 
