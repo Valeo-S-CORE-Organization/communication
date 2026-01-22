@@ -461,7 +461,8 @@ cc_library(
 
 cc_library(
     name = "generic_skeleton_event_binding_factory",
-    srcs = ["generic_skeleton_event_binding_factory.cpp"],
+    srcs = ["generic_skeleton_event_binding_factory.cpp",
+            "generic_skeleton_event_binding_factory_impl.cpp",],
     hdrs = ["generic_skeleton_event_binding_factory.h",
             "skeleton_service_element_binding_factory_impl.h"],
     features = COMPILER_WARNING_FEATURES,

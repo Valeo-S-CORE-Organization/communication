@@ -13,9 +13,9 @@
 #ifndef SCORE_MW_COM_IMPL_PLUMBING_GENERIC_SKELETON_EVENT_BINDING_FACTORY_IMPL_H
 #define SCORE_MW_COM_IMPL_PLUMBING_GENERIC_SKELETON_EVENT_BINDING_FACTORY_IMPL_H
 
-#include "score/mw/com/impl/i_generic_skeleton_event_binding_factory.h" // Updated include path
+#include "score/mw/com/impl/i_generic_skeleton_event_binding_factory.h" 
 
-namespace score::mw::com::impl { // Updated namespace
+namespace score::mw::com::impl { 
 
 class GenericSkeletonEventBindingFactoryImpl : public IGenericSkeletonEventBindingFactory {
 public:

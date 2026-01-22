@@ -12,12 +12,31 @@
  ********************************************************************************/
 
 #include "score/mw/com/impl/plumbing/generic_skeleton_event_binding_factory.h"
+#include "score/mw/com/impl/plumbing/generic_skeleton_event_binding_factory_impl.h"
 
 namespace score::mw::com::impl
 {
 
-// The logic for 'Create' and 'mock_' is now handled entirely in the header file 
-// using C++17 'inline static' to support the static proxy pattern.
-// This file remains here to satisfy the Bazel build rule but requires no implementation.
+// Define the static mock pointer
+IGenericSkeletonEventBindingFactory* GenericSkeletonEventBindingFactory::mock_ = nullptr;
+
+IGenericSkeletonEventBindingFactory& GenericSkeletonEventBindingFactory::instance()
+{
+    if (mock_)
+    {
+        return *mock_;
+    }
+
+    static GenericSkeletonEventBindingFactoryImpl impl;
+    return impl;
+}
+
+Result<std::unique_ptr<GenericSkeletonEventBinding>> GenericSkeletonEventBindingFactory::Create(
+    SkeletonBase& skeleton_base,
+    std::string_view event_name,
+    const SizeInfo& size_info) noexcept
+{
+    return instance().Create(skeleton_base, event_name, size_info);
+}
 
 } // namespace score::mw::com::impl
