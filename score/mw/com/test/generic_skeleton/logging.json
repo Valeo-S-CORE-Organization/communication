@@ -1,0 +1,8 @@
+{
+  "appId": "GENT",
+  "appDesc": "generic_typed_interaction_test",
+  "logLevel": "kDebug",
+  "logLevelThresholdConsole": "kDebug",
+  "logMode": "kConsole",
+  "dynamicDatarouterIdentifiers" : true
+}

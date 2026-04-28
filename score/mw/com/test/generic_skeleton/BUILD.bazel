@@ -1,0 +1,40 @@
+# Copyright (c) 2025 Contributors to the Eclipse Foundation
+#
+# See the NOTICE file(s) distributed with this work for additional
+# information regarding copyright ownership.
+#
+# This program and the accompanying materials are made available under the
+# terms of the Apache License Version 2.0 which is available at
+# https://www.apache.org/licenses/LICENSE-2.0
+#
+# SPDX-License-Identifier: Apache-2.0
+
+load("@rules_cc//cc:defs.bzl", "cc_binary")
+load("@score_baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
+load("//score/mw/com/test:pkg_application.bzl", "pkg_application")
+
+package(default_visibility = ["//visibility:public"])
+
+cc_binary(
+    name = "generic_typed_interaction_app",
+    srcs = ["generic_typed_interaction_app.cpp"],
+    deps = [
+        # Public API for runtime and configuration
+        "//score/mw/com",
+        # Common test dependency to get access to 'impl' headers
+        "//score/mw/com/test/common_test_resources:sample_sender_receiver",
+        "//score/mw/com/test/common_test_resources:sctf_test_runner",
+    ],
+    features = COMPILER_WARNING_FEATURES,
+)
+
+pkg_application(
+    name = "generic_typed_interaction_app-pkg",
+    app_name = "generic_typed_interaction_app",
+    bin = [":generic_typed_interaction_app"],
+    etc = [
+        "mw_com_config.json",
+        "logging.json",
+    ],
+    visibility = ["//score/mw/com/test/generic_skeleton:__subpackages__"],
+)
