@@ -1,0 +1,47 @@
+{
+  "serviceTypes": [
+    {
+      "serviceTypeName": "/test/service/GenericTypedInteraction",
+      "version": {
+        "major": 1,
+        "minor": 0
+      },
+      "bindings": [
+        {
+          "binding": "SHM",
+          "serviceId": 7001,
+          "events": [
+            {
+              "eventName": "MyTestEvent",
+              "eventId": 1
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "serviceInstances": [
+    {
+      "instanceSpecifier": "/test/generic/typed/interaction",
+      "serviceTypeName": "/test/service/GenericTypedInteraction",
+      "version": {
+        "major": 1,
+        "minor": 0
+      },
+      "instances": [
+        {
+          "instanceId": 1,
+          "asil-level": "QM",
+          "binding": "SHM",
+          "events": [
+            {
+              "eventName": "MyTestEvent",
+              "numberOfSampleSlots": 6,
+              "maxSubscribers": 1
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
