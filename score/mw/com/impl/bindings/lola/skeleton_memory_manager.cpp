@@ -214,8 +214,11 @@ void* SkeletonMemoryManager::CreateGenericEventDataInCreatedSharedMemory(
     const size_t num_max_align_elements =
         (total_data_size_bytes + sizeof(std::max_align_t) - 1) / sizeof(std::max_align_t);
 
+    // Ensure capacity is at least equal to the number of slots to prevent out-of-bounds access
+    const size_t safe_capacity = std::max(element_properties.number_of_slots, num_max_align_elements);
+
     auto* data_storage = storage_resource_->construct<EventDataStorage<std::max_align_t>>(
-        num_max_align_elements, memory::shared::PolymorphicOffsetPtrAllocator<std::max_align_t>(*storage_resource_));
+        safe_capacity, memory::shared::PolymorphicOffsetPtrAllocator<std::max_align_t>(*storage_resource_));
 
     auto inserted_data_slots = storage_->events_.emplace(
         std::piecewise_construct, std::forward_as_tuple(element_fq_id), std::forward_as_tuple(data_storage));
@@ -232,7 +235,7 @@ void* SkeletonMemoryManager::CreateGenericEventDataInCreatedSharedMemory(
     SCORE_LANGUAGE_FUTURECPP_ASSERT_PRD_MESSAGE(inserted_meta_info.second,
                                                 "Couldn't register/emplace event-meta-info in data-section.");
 
-    return data_storage;
+    return event_data_raw_array;
 }
 
 auto SkeletonMemoryManager::RetrieveEventControlsFromOpenedSharedMemory(const ElementFqId element_fq_id)
