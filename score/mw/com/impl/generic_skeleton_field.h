@@ -37,7 +37,7 @@ class GenericSkeletonField : public SkeletonFieldBase
   public:
     /// \brief Constructs a new GenericSkeletonField.
     /// \param skeleton_base The parent skeleton instance.
-    /// \param field_name The logical name of the field.
+    /// \param field_name The name of the field.
     /// \param generic_event The underlying type-erased event used for field notifications.
     /// \param has_getter Indicates whether this field is configured to have a Get handler.
     /// \param has_setter Indicates whether this field is configured to have a Set handler.
@@ -61,9 +61,8 @@ class GenericSkeletonField : public SkeletonFieldBase
     ///          shared memory so the value is visible to subsequent Get requests.
     ///          If configured with a notifier, it also notifies subscribers.
     ///          If `OfferService()` has not been called yet, the payload is cached as
-    ///          the initial value and deferred until the service is offered.
+    ///          the initial value and the sending towards the binding deferred until the service is offered.
     /// \param raw_value The type-erased payload representing the new field value.
-    /// \return A result indicating success or an error code on failure.
     Result<void> Update(score::cpp::span<const uint8_t> raw_value) noexcept;
 
     /// \brief Updates the field value using a pre-allocated sample.
@@ -71,7 +70,6 @@ class GenericSkeletonField : public SkeletonFieldBase
     ///          shared memory so the value is visible to subsequent Get requests.
     ///          If configured with a notifier, it also notifies subscribers.
     /// \param sample A sample previously allocated via `Allocate()`.
-    /// \return A result indicating success or an error code on failure.
     Result<void> Update(SampleAllocateePtr<void> sample) noexcept;
 
     /// \brief Allocates a zero-copy sample buffer for this field.

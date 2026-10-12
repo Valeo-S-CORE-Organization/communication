@@ -26,15 +26,17 @@ namespace score::mw::com::impl
 {
 
 class SkeletonBase;
+class GenericSkeleton;
 
 class GenericSkeletonEvent : public SkeletonEventBase
 {
-  public:
+    friend class GenericSkeleton;
+
     struct FieldOnlyConstructorEnabler
     {
-        explicit FieldOnlyConstructorEnabler() = default;
     };
 
+  public:
     GenericSkeletonEvent(SkeletonBase& skeleton_base,
                          const std::string_view event_name,
                          std::unique_ptr<SkeletonEventBinding> binding);

@@ -61,7 +61,8 @@ std::string_view GetEventName(const InstanceIdentifier& identifier, std::string_
     return std::visit(visitor, service_type_deployment.binding_info_);
 }
 
-// Helper to fetch the stable field name from the Configuration
+/// \brief Returns the field name from the configuration as a string_view, which is assured to stay valid for the
+///        whole application lifecycle.
 std::string_view GetFieldName(const InstanceIdentifier& identifier, std::string_view search_name)
 {
     const auto& service_type_deployment = InstanceIdentifierView{identifier}.GetServiceTypeDeployment();
